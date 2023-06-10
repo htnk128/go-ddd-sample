@@ -2,7 +2,6 @@ package model
 
 import (
 	"fmt"
-	"regexp"
 
 	"github.com/friendsofgo/errors"
 	"github.com/google/uuid"
@@ -18,10 +17,8 @@ func GenerateAccountID() *AccountID {
 	return &AccountID{SomeIdentity: domain.NewSomeIdentity(fmt.Sprintf("AC_%s", uuid.New().String()))}
 }
 
-var r = regexp.MustCompile(domain.SomeIdentityPattern)
-
 func NewAccountID(id string) (*AccountID, error) {
-	if domain.SomeIdentityMinLength <= len(id) && len(id) <= domain.SomeIdentityMaxLength && r.MatchString(id) {
+	if domain.SomeIdentityMinLength <= len(id) && len(id) <= domain.SomeIdentityMaxLength && domain.SomeIdentityRegexp.MatchString(id) {
 		return &AccountID{SomeIdentity: domain.NewSomeIdentity(id)}, nil
 	}
 

@@ -12,19 +12,19 @@ import (
 type Account struct {
 	domain.Entity
 
-	id                AccountID
-	name              AccountName
-	namePronunciation AccountNamePronunciation
-	email             AccountEmail
-	password          AccountPassword
-	createdAt         time.Time
-	deletedAt         *time.Time
-	updatedAt         time.Time
-	occurredEvents    []*AccountEvent
+	ID                AccountID
+	Name              AccountName
+	NamePronunciation AccountNamePronunciation
+	Email             AccountEmail
+	Password          AccountPassword
+	CreatedAt         time.Time
+	DeletedAt         *time.Time
+	UpdatedAt         time.Time
+	OccurredEvents    []*AccountEvent
 }
 
 func (a *Account) IsDeleted() bool {
-	return a.deletedAt != nil
+	return a.DeletedAt != nil
 }
 
 func (a *Account) Update(
@@ -32,41 +32,39 @@ func (a *Account) Update(
 	namePronunciation *AccountNamePronunciation,
 	email *AccountEmail,
 	password *AccountPassword,
-) (*Account, error) {
+) error {
 	if a.IsDeleted() {
-		return nil, errors.New("Account has been deleted.")
+		return errors.New("Account has been deleted.")
 	}
 
 	if name != nil {
-		a.name = *name
+		a.Name = *name
 	}
 	if namePronunciation != nil {
-		a.namePronunciation = *namePronunciation
+		a.NamePronunciation = *namePronunciation
 	}
 	if email != nil {
-		a.email = *email
+		a.Email = *email
 	}
 	if password != nil {
-		a.password = *password
+		a.Password = *password
 	}
 
-	a.updatedAt = time.Now()
-	a.occurredEvents = append(a.occurredEvents, NewAccountUpdated(a))
+	a.UpdatedAt = time.Now()
+	a.OccurredEvents = append(a.OccurredEvents, NewAccountUpdated(a))
 
-	return a, nil
+	return nil
 }
 
-func (a *Account) Delete() *Account {
+func (a *Account) Delete() {
 	if a.IsDeleted() {
-		return a
+		return
 	}
 
 	now := time.Now()
-	a.deletedAt = &now
-	a.updatedAt = now
-	a.occurredEvents = append(a.occurredEvents, NewAccountDeleted(a))
-
-	return a
+	a.DeletedAt = &now
+	a.UpdatedAt = now
+	a.OccurredEvents = append(a.OccurredEvents, NewAccountDeleted(a))
 }
 
 func (a *Account) Equals(other *Account) bool {
@@ -74,19 +72,19 @@ func (a *Account) Equals(other *Account) bool {
 }
 
 func (a *Account) SameIdentityAs(other *Account) bool {
-	return a.id == other.id
+	return a.ID == other.ID
 }
 
 func (a *Account) String() string {
-	updatedAt := a.updatedAt.Format(time.RFC3339)
-	createdAt := a.createdAt.Format(time.RFC3339)
+	updatedAt := a.UpdatedAt.Format(time.RFC3339)
+	createdAt := a.CreatedAt.Format(time.RFC3339)
 	var deletedAt = "nil"
-	if a.deletedAt != nil {
-		deletedAt = a.deletedAt.Format(time.RFC3339)
+	if a.DeletedAt != nil {
+		deletedAt = a.DeletedAt.Format(time.RFC3339)
 	}
 
-	return fmt.Sprintf("id=%v, name=%v, namePronunciation=%v, email=%v, password=%v, createdAt=%v, deletedAt=%v, updatedAt=%v",
-		a.id, a.name, a.namePronunciation, a.email, a.password, createdAt, deletedAt, updatedAt)
+	return fmt.Sprintf("ID=%v, Name=%v, NamePronunciation=%v, Email=%v, Password=%v, CreatedAt=%v, DeletedAt=%v, UpdatedAt=%v",
+		a.ID, a.Name, a.NamePronunciation, a.Email, a.Password, createdAt, deletedAt, updatedAt)
 }
 
 func NewAccount(
@@ -98,16 +96,16 @@ func NewAccount(
 ) *Account {
 	now := time.Now()
 	a := &Account{
-		id:                id,
-		name:              name,
-		namePronunciation: namePronunciation,
-		email:             email,
-		password:          password,
-		createdAt:         now,
-		deletedAt:         nil,
-		updatedAt:         now,
+		ID:                id,
+		Name:              name,
+		NamePronunciation: namePronunciation,
+		Email:             email,
+		Password:          password,
+		CreatedAt:         now,
+		DeletedAt:         nil,
+		UpdatedAt:         now,
 	}
-	a.occurredEvents = []*AccountEvent{NewAccountCreated(a)}
+	a.OccurredEvents = []*AccountEvent{NewAccountCreated(a)}
 
 	return a
 }

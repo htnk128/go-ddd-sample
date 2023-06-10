@@ -26,7 +26,7 @@ func (si *SomeIdentity) String() string {
 const (
 	SomeIdentityMinLength = 1
 	SomeIdentityMaxLength = 64
-	SomeIdentityPattern   = "[\\p{Alnum}-_]*"
+	SomeIdentityPattern   = "[0-9A-Za-z-_]+"
 )
 
 func NewSomeIdentity(id string) *SomeIdentity {

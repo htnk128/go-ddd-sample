@@ -19,7 +19,7 @@ func NewAccountName(value string) (*AccountName, error) {
 	)
 
 	if minLength <= len(value) && len(value) <= maxLength {
-		return &AccountName{SomeValueObject: &domain.SomeValueObject[string]{Value: value}}, nil
+		return &AccountName{SomeValueObject: domain.NewSomeValueObject(value)}, nil
 	}
 
 	return nil, errors.New(fmt.Sprintf("AccountName must be %d characters or less.", maxLength))

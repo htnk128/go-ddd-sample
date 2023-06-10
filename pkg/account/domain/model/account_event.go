@@ -11,14 +11,18 @@ type AccountEvent struct {
 
 	Type       AccountEventType
 	Account    *Account
-	OccurredOn time.Time
+	occurredOn time.Time
+}
+
+func (ae *AccountEvent) OccurredOn() time.Time {
+	return ae.occurredOn
 }
 
 func (ae *AccountEvent) SameEventAs(other *AccountEvent) bool {
 	if ae.Type != other.Type {
 		return false
 	}
-	if ae.OccurredOn != other.OccurredOn {
+	if ae.occurredOn != other.occurredOn {
 		return false
 	}
 	return true
@@ -52,6 +56,6 @@ func newAccountEvent(accountEventType AccountEventType, account *Account) *Accou
 	return &AccountEvent{
 		Type:       accountEventType,
 		Account:    account,
-		OccurredOn: time.Now(),
+		occurredOn: time.Now(),
 	}
 }

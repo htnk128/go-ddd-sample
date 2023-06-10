@@ -30,18 +30,18 @@ func NewAccountPasswordWithHash(value string, id AccountID) (*AccountPassword, e
 	if minLength <= len(value) && len(value) <= maxLength {
 		secret := []byte(value)
 		salt := sha256.New()
-		salt.Write([]byte(id.ID))
+		salt.Write([]byte(id.ID()))
 		saltBytes := salt.Sum(nil)
 
 		derivedKey := pbkdf2.Key(secret, saltBytes, iterationCount, keyLength/8, sha256.New)
 		encodedKey := hex.EncodeToString(derivedKey)
 
-		return &AccountPassword{SomeValueObject: &domain.SomeValueObject[string]{Value: encodedKey}}, nil
+		return &AccountPassword{SomeValueObject: domain.NewSomeValueObject(encodedKey)}, nil
 	}
 
 	return nil, errors.New(fmt.Sprintf("AccountPassword must be between %d and %d characters.", minLength, maxLength))
 }
 
 func NewAccountPassword(value string) *AccountPassword {
-	return &AccountPassword{SomeValueObject: &domain.SomeValueObject[string]{Value: value}}
+	return &AccountPassword{SomeValueObject: domain.NewSomeValueObject(value)}
 }

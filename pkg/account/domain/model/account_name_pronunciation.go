@@ -19,7 +19,7 @@ func NewAccountNamePronunciation(value string) (*AccountNamePronunciation, error
 	)
 
 	if minLength <= len(value) && len(value) <= maxLength {
-		return &AccountNamePronunciation{SomeValueObject: &domain.SomeValueObject[string]{Value: value}}, nil
+		return &AccountNamePronunciation{SomeValueObject: domain.NewSomeValueObject(value)}, nil
 	}
 
 	return nil, errors.New(fmt.Sprintf("AccountNamePronunciation must be %d characters or less.", maxLength))

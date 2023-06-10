@@ -8,7 +8,11 @@ import (
 type SomeValueObject[V comparable] struct {
 	ValueObject
 
-	Value V
+	value V
+}
+
+func (svo *SomeValueObject[V]) Value() V {
+	return svo.value
 }
 
 func (svo *SomeValueObject[V]) Equals(other *SomeValueObject[V]) bool {
@@ -16,9 +20,13 @@ func (svo *SomeValueObject[V]) Equals(other *SomeValueObject[V]) bool {
 }
 
 func (svo *SomeValueObject[V]) SameValueAs(other *SomeValueObject[V]) bool {
-	return svo.Value == other.Value
+	return svo.value == other.value
 }
 
 func (svo *SomeValueObject[V]) String() string {
-	return fmt.Sprintf("%v", svo.Value)
+	return fmt.Sprintf("%v", svo.value)
+}
+
+func NewSomeValueObject[V comparable](value V) *SomeValueObject[V] {
+	return &SomeValueObject[V]{value: value}
 }

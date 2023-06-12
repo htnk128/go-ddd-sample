@@ -16,16 +16,27 @@ ROOT_PACKAGE := github.com/simply-app/simply-console
 tidy:
 	GO111MODULE=on go mod tidy
 
-.PHONY: build
-build: fmt
+.PHONY: build-account
+build-account: fmt
 	GO111MODULE=on GOOS=$(GOOS) GOARCH=$(GOARCH) \
 		go build -ldflags "-s -w" \
 		-trimpath -o bin/app cmd/account/server.go
 
-.PHONY: serve-dev
-serve-dev: build
+.PHONY: build-address
+build-address: fmt
+	GO111MODULE=on GOOS=$(GOOS) GOARCH=$(GOARCH) \
+		go build -ldflags "-s -w" \
+		-trimpath -o bin/app cmd/address/server.go
+
+.PHONY: serve-account-dev
+serve-account-dev: build-account
 	GO111MODULE=on GOOS=$(GOOS) GOARCH=$(GOARCH) \
 		go run cmd/account/server.go
+
+.PHONY: serve-address-dev
+serve-address-dev: build-account
+	GO111MODULE=on GOOS=$(GOOS) GOARCH=$(GOARCH) \
+		go run cmd/address/server.go
 
 .PHONY: fmt
 fmt:

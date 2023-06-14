@@ -5,6 +5,8 @@ services:
     image: go-ddd-sample-account
     build:
       context: .
+      args:
+        app: "account"
       dockerfile: ./docker/app/Dockerfile
     tty: true
     ports:

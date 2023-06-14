@@ -1,0 +1,13 @@
+version: "3"
+services:
+  go-ddd-sample-db:
+    container_name: go-ddd-sample-db
+    image: go-ddd-sample-db
+    build: ./db/
+    ports:
+      - "3306:3306"
+    volumes:
+      - go-ddd-sample-db:/var/lib/mysql
+      - ./db/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d
+volumes:
+  go-ddd-sample-db:

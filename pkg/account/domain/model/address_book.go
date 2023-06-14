@@ -1,8 +1,9 @@
 package model
 
 import (
-	"github.com/htnk128/go-ddd-sample/pkg/ddd/core/domain"
 	"reflect"
+
+	"github.com/htnk128/go-ddd-sample/pkg/ddd/core/domain"
 )
 
 type AddressBook struct {
@@ -12,13 +13,13 @@ type AddressBook struct {
 }
 
 func (ab *AddressBook) AvailableAccountAddresses() []*AccountAddress {
-	aaa := make([]*AccountAddress, 0)
+	aas := make([]*AccountAddress, 0)
 	for _, aa := range ab.AllAccountAddresses {
 		if aa.IsAvailable() {
-			aaa = append(aaa, aa)
+			aas = append(aas, aa)
 		}
 	}
-	return aaa
+	return aas
 }
 
 func (ab *AddressBook) Equals(other *AddressBook) bool {

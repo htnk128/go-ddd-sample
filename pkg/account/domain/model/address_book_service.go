@@ -1,6 +1,6 @@
 package model
 
 type AddressBookService interface {
-	Find(accountID AccountID) *AddressBook
-	Remove(accountAddressID AccountAddressID)
+	Find(accountID AccountID) (*AddressBook, error)
+	Remove(accountAddressID AccountAddressID) error
 }

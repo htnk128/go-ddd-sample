@@ -148,6 +148,7 @@ func (ac *AccountController) Update() echo.HandlerFunc {
 		}
 
 		cmd := command.UpdateAccountCommand{
+			AccountID:         c.Param(AccountIDParam),
 			Name:              req.Name,
 			NamePronunciation: req.NamePronunciation,
 			Email:             req.Email,

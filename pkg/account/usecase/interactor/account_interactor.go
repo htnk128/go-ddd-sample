@@ -66,7 +66,7 @@ func (ai *AccountInteractor) Create(ctx context.Context, command command.CreateA
 	if err != nil {
 		return nil, sharedUseCase.NewInvalidRequestError(err.Error())
 	}
-	password := model.NewAccountPassword(command.Password)
+	password, err := model.NewAccountPasswordWithHash(command.Password, *id)
 	if err != nil {
 		return nil, sharedUseCase.NewInvalidRequestError(err.Error())
 	}
@@ -110,7 +110,7 @@ func (ai *AccountInteractor) Update(ctx context.Context, command command.UpdateA
 	}
 	var password *model.AccountPassword
 	if command.Password != nil {
-		password = model.NewAccountPassword(*command.Password)
+		password, err = model.NewAccountPasswordWithHash(*command.Password, *id)
 		if err != nil {
 			return nil, sharedUseCase.NewInvalidRequestError(err.Error())
 		}

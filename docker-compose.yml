@@ -5,7 +5,9 @@ services:
     image: go-ddd-sample-account
     build:
       context: .
-      dockerfile: ./docker/app/account/Dockerfile
+      args:
+        app: "account"
+      dockerfile: ./docker/app/Dockerfile
     tty: true
     ports:
       - "8080:8080"

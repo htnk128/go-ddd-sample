@@ -28,7 +28,7 @@ type dbConfig struct {
 func newDBConfig() (*dbConfig, error) {
 	host, b := os.LookupEnv("DB_HOST")
 	if !b {
-		host = "127.0.0.1:3306"
+		host = "go-ddd-sample-db:3306"
 	}
 
 	userName, b := os.LookupEnv("DB_USERNAME")

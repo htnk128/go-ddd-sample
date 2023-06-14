@@ -51,7 +51,7 @@ func (ac *AccountController) Find() echo.HandlerFunc {
 		}
 		a, err := ac.inAccountUseCase.Find(ctx, cmd)
 		if err != nil {
-			res := errorResponseFromError(err)
+			res := errorResponseFromCustomError(err)
 			return c.JSON(res.Error.Status, res)
 		}
 
@@ -83,7 +83,7 @@ func (ac *AccountController) FindAll() echo.HandlerFunc {
 
 		cnt, as, err := ac.inAccountUseCase.FindAll(ctx, cmd)
 		if err != nil {
-			res := errorResponseFromError(err)
+			res := errorResponseFromCustomError(err)
 			return c.JSON(res.Error.Status, res)
 		}
 
@@ -108,11 +108,8 @@ func (ac *AccountController) Create() echo.HandlerFunc {
 
 		var req resource.AccountCreateRequest
 		if err := c.Bind(&req); err != nil {
-			errType := sharedUseCase.InvalidRequestErrorType
-			code := sharedUseCase.InvalidRequestErrorStatus
-			message := errType + ": " + err.Error()
-			res := sharedResource.NewErrorResponse(errType, code, message)
-			return c.JSON(code, res)
+			res := errorResponseFromError(err)
+			return c.JSON(res.Error.Status, res)
 		}
 
 		cmd := command.CreateAccountCommand{
@@ -124,7 +121,7 @@ func (ac *AccountController) Create() echo.HandlerFunc {
 
 		a, err := ac.inAccountUseCase.Create(ctx, cmd)
 		if err != nil {
-			res := errorResponseFromError(err)
+			res := errorResponseFromCustomError(err)
 			return c.JSON(res.Error.Status, res)
 		}
 
@@ -140,11 +137,8 @@ func (ac *AccountController) Update() echo.HandlerFunc {
 
 		var req resource.AccountUpdateRequest
 		if err := c.Bind(&req); err != nil {
-			errType := sharedUseCase.InvalidRequestErrorType
-			code := sharedUseCase.InvalidRequestErrorStatus
-			message := errType + ": " + err.Error()
-			res := sharedResource.NewErrorResponse(errType, code, message)
-			return c.JSON(code, res)
+			res := errorResponseFromError(err)
+			return c.JSON(res.Error.Status, res)
 		}
 
 		cmd := command.UpdateAccountCommand{
@@ -157,7 +151,7 @@ func (ac *AccountController) Update() echo.HandlerFunc {
 
 		a, err := ac.inAccountUseCase.Update(ctx, cmd)
 		if err != nil {
-			res := errorResponseFromError(err)
+			res := errorResponseFromCustomError(err)
 			return c.JSON(res.Error.Status, res)
 		}
 
@@ -176,7 +170,7 @@ func (ac *AccountController) Delete() echo.HandlerFunc {
 		}
 		a, err := ac.inAccountUseCase.Delete(ctx, cmd)
 		if err != nil {
-			res := errorResponseFromError(err)
+			res := errorResponseFromCustomError(err)
 			return c.JSON(res.Error.Status, res)
 		}
 
@@ -186,11 +180,18 @@ func (ac *AccountController) Delete() echo.HandlerFunc {
 	}
 }
 
-func errorResponseFromError(err error) *sharedResource.ErrorResponse {
+func errorResponseFromCustomError(err error) *sharedResource.ErrorResponse {
 	errorType := sharedUseCase.ErrorType(err)
 	code := sharedUseCase.ErrorStatus(err)
 	message := sharedUseCase.ErrorMessage(err)
 	return sharedResource.NewErrorResponse(errorType, code, message)
+}
+
+func errorResponseFromError(err error) *sharedResource.ErrorResponse {
+	errType := sharedUseCase.InvalidRequestErrorType
+	code := sharedUseCase.InvalidRequestErrorStatus
+	message := errType + ": " + err.Error()
+	return sharedResource.NewErrorResponse(errType, code, message)
 }
 
 func responseFromDTO(dto *dto.AccountDTO) *resource.AccountResponse {

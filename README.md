@@ -3,6 +3,9 @@
 This is a DDD sample using golang.
 This is a golang version of [kotlin-dddd-sample](https://github.com/htnk128/kotlin-ddd-sample).
 
+- [echo](https://github.com/labstack/echo)
+- [sqlboiler](https://github.com/volatiletech/sqlboiler)
+
 ## Run Application
 TBD
 

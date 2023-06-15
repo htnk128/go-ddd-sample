@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -9,6 +10,8 @@ import (
 	"github.com/friendsofgo/errors"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+
+	"github.com/htnk128/go-ddd-sample/pkg/address/adapter/controller"
 )
 
 type httpConfig struct {
@@ -52,7 +55,11 @@ func newHTTPConfig() (*httpConfig, error) {
 	}, nil
 }
 
-func initRouter() *echo.Echo {
+const (
+	addressAPIRoot = "/addresses"
+)
+
+func initRouter() (*echo.Echo, error) {
 	e := echo.New()
 
 	e.Use(
@@ -60,11 +67,29 @@ func initRouter() *echo.Echo {
 		middleware.Recover(),
 	)
 
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	addressController, err := controller.NewAddressController()
+	if err != nil {
+		return nil, err
+	}
 
-	return e
+	addressGroup := e.Group(addressAPIRoot)
+
+	path := fmt.Sprintf("/:%s", controller.AddressIDParam)
+	addressGroup.GET(path, addressController.Find())
+
+	path = ""
+	addressGroup.GET(path, addressController.FindAll())
+
+	path = ""
+	addressGroup.POST(path, addressController.Create())
+
+	path = fmt.Sprintf("/:%s", controller.AddressIDParam)
+	addressGroup.PUT(path, addressController.Update())
+
+	path = fmt.Sprintf("/:%s", controller.AddressIDParam)
+	addressGroup.DELETE(path, addressController.Delete())
+
+	return e, nil
 }
 
 func NewHttpServer() *http.Server {
@@ -73,7 +98,10 @@ func NewHttpServer() *http.Server {
 		panic(err)
 	}
 
-	router := initRouter()
+	router, err := initRouter()
+	if err != nil {
+		panic(err)
+	}
 
 	return &http.Server{
 		Addr:         config.addr,

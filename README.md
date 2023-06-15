@@ -8,10 +8,9 @@ This is a golang version of [kotlin-dddd-sample](https://github.com/htnk128/kotl
 - [Staticcheck](https://staticcheck.io/)
 
 ## Run Application
-TBD
 
-### Account
-TBD
-
-### Address
-TBD
+```bash
+$ make up-all
+$ make migrate-up app=account
+$ make migrate-up app=address
+```

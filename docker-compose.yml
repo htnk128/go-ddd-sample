@@ -13,6 +13,19 @@ services:
       - "8080:8080"
     depends_on:
       - go-ddd-sample-db
+  go-ddd-sample-address:
+    container_name: go-ddd-sample-address
+    image: go-ddd-sample-address
+    build:
+      context: .
+      args:
+        app: "address"
+      dockerfile: ./docker/app/Dockerfile
+    tty: true
+    ports:
+      - "8081:8081"
+    depends_on:
+      - go-ddd-sample-db
   go-ddd-sample-db:
     container_name: go-ddd-sample-db
     image: go-ddd-sample-db

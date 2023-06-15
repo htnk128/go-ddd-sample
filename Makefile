@@ -33,9 +33,13 @@ build: fmt
 	GO111MODULE=on GOOS=$(GOOS) GOARCH=$(GOARCH) \
 		go build -tags timetzdata -ldflags "-s -w" -trimpath -o bin/$(app) cmd/$(app)/server.go
 
+.PHONY: up-all
+up-all:
+	@docker-compose up -d
+
 .PHONY: up
 up:
-	@docker-compose up go-ddd-sample-$(app)
+	@docker-compose up -d go-ddd-sample-$(app)
 
 .PHONY: ps
 ps:

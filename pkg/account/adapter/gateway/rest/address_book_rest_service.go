@@ -20,7 +20,7 @@ type addressClientConfig struct {
 func newAddressClientConfig() *addressClientConfig {
 	url, b := os.LookupEnv("ADDRESS_URL")
 	if !b {
-		url = "http://localhost:8081/addresses"
+		url = "http://go-ddd-sample-address:8081/addresses"
 	}
 
 	return &addressClientConfig{

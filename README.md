@@ -5,6 +5,7 @@ This is a golang version of [kotlin-dddd-sample](https://github.com/htnk128/kotl
 
 - [echo](https://github.com/labstack/echo)
 - [sqlboiler](https://github.com/volatiletech/sqlboiler)
+- [Staticcheck](https://staticcheck.io/)
 
 ## Run Application
 TBD

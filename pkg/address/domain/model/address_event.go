@@ -40,22 +40,22 @@ func (t *AddressEventType) SameValueAs(other *AddressEventType) bool {
 	return t == other
 }
 
-func NewAddressCreated(account *Address) *AddressEvent {
-	return newAddressEvent(AddressCreated, account)
+func NewAddressCreated(address *Address) *AddressEvent {
+	return newAddressEvent(AddressCreated, address)
 }
 
-func NewAddressUpdated(account *Address) *AddressEvent {
-	return newAddressEvent(AddressUpdated, account)
+func NewAddressUpdated(address *Address) *AddressEvent {
+	return newAddressEvent(AddressUpdated, address)
 }
 
-func NewAddressDeleted(account *Address) *AddressEvent {
-	return newAddressEvent(AddressDeleted, account)
+func NewAddressDeleted(address *Address) *AddressEvent {
+	return newAddressEvent(AddressDeleted, address)
 }
 
-func newAddressEvent(accountEventType AddressEventType, account *Address) *AddressEvent {
+func newAddressEvent(addressEventType AddressEventType, address *Address) *AddressEvent {
 	return &AddressEvent{
-		Type:       accountEventType,
-		Address:    account,
+		Type:       addressEventType,
+		Address:    address,
 		occurredOn: time.Now(),
 	}
 }

@@ -52,6 +52,9 @@ func (abs *ownerRestService) Find(ownerID model.OwnerID) (*model.Owner, error) {
 	if err != nil {
 		return nil, err
 	}
+	if res == nil {
+		return nil, nil
+	}
 
 	id, err := model.NewOwnerID(res.AccountID)
 	if err != nil {
@@ -86,6 +89,10 @@ func (ac *accountClient) find(accountID string) (*accountResponse, error) {
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to fetch account.")
+	}
+
+	if res.StatusCode == http.StatusNotFound {
+		return nil, nil
 	}
 
 	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusBadRequest {

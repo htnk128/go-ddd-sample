@@ -122,6 +122,9 @@ func (ai *AccountInteractor) Update(ctx context.Context, command command.UpdateA
 	if err != nil {
 		return nil, sharedUseCase.NewServerError("internal server error. " + err.Error())
 	}
+	if a == nil {
+		return nil, sharedUseCase.NewNotFoundError(fmt.Sprintf("account not found. (accountId=%s)", id.String()))
+	}
 	err = a.Update(name, namePronunciation, email, password)
 	if err != nil {
 		return nil, sharedUseCase.NewInvalidDataStateError("account has been deleted.")
@@ -149,6 +152,9 @@ func (ai *AccountInteractor) Delete(ctx context.Context, command command.DeleteA
 	a, err := ai.accountRepository.Find(ctx, *id, true)
 	if err != nil {
 		return nil, sharedUseCase.NewServerError("internal server error. " + err.Error())
+	}
+	if a == nil {
+		return nil, sharedUseCase.NewNotFoundError(fmt.Sprintf("account not found. (accountId=%s)", id.String()))
 	}
 	a.Delete()
 	cnt, err := ai.accountRepository.Set(ctx, a)

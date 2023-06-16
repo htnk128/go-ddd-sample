@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/friendsofgo/errors"
 	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
@@ -31,6 +32,9 @@ func (asr *addressSQLBoilerRepository) Find(ctx context.Context, addressID model
 	}
 	ac, err := gatewayModel.Addresses(q...).One(ctx, asr.db)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, nil
+		}
 		return nil, err
 	}
 	m, err := addressFromGatewayModel(ac)

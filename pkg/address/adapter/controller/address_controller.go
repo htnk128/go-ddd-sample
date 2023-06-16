@@ -187,11 +187,13 @@ func errorResponseFromError(err error) *sharedResource.ErrorResponse {
 func responseFromDTO(dto *dto.AddressDTO) *resource.AddressResponse {
 	return &resource.AddressResponse{
 		AddressID:     dto.AddressID,
+		OwnerID:       dto.OwnerID,
 		FullName:      dto.FullName,
 		ZipCode:       dto.ZipCode,
 		StateOrRegion: dto.StateOrRegion,
 		Line1:         dto.Line1,
 		Line2:         dto.Line2,
+		PhoneNumber:   dto.PhoneNumber,
 		CreatedAt:     dto.CreatedAt,
 		DeletedAt:     dto.DeletedAt,
 		UpdatedAt:     dto.UpdatedAt,

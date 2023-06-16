@@ -89,8 +89,11 @@ func (ai *AddressInteractor) Create(ctx context.Context, command command.CreateA
 	// TODO トランザクション
 
 	o, err := ai.ownerService.Find(*ownerID)
-	if err != nil || !o.IsAvailable() {
+	if err != nil {
 		return nil, sharedUseCase.NewNotFoundError(err.Error())
+	}
+	if o == nil || (o != nil && !o.IsAvailable()) {
+		return nil, sharedUseCase.NewNotFoundError(fmt.Sprintf("owner not found. (ownerId=%s)", ownerID.String()))
 	}
 
 	a := model.NewAddress(*id, *ownerID, *fullName, *zipCode, *StateOrRegion, *line1, line2, *phoneNumber)
@@ -157,6 +160,9 @@ func (ai *AddressInteractor) Update(ctx context.Context, command command.UpdateA
 	if err != nil {
 		return nil, sharedUseCase.NewServerError("internal server error. " + err.Error())
 	}
+	if a == nil {
+		return nil, sharedUseCase.NewNotFoundError(fmt.Sprintf("address not found. (addressId=%s)", id.String()))
+	}
 	err = a.Update(fullName, zipCode, stateOrRegion, line1, line2, phoneNumber)
 	if err != nil {
 		return nil, sharedUseCase.NewInvalidDataStateError("address has been deleted.")
@@ -184,6 +190,9 @@ func (ai *AddressInteractor) Delete(ctx context.Context, command command.DeleteA
 	a, err := ai.addressRepository.Find(ctx, *id, true)
 	if err != nil {
 		return nil, sharedUseCase.NewServerError("internal server error. " + err.Error())
+	}
+	if a == nil {
+		return nil, sharedUseCase.NewNotFoundError(fmt.Sprintf("address not found. (addressId=%s)", id.String()))
 	}
 	a.Delete()
 	cnt, err := ai.addressRepository.Set(ctx, a)

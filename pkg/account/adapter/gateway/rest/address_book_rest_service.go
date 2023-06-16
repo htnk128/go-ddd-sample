@@ -3,7 +3,7 @@ package rest
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"time"
@@ -104,7 +104,7 @@ func (ac *addressClient) findAll(accountID string) (*addressResponses, error) {
 		_ = res.Body.Close()
 	}()
 
-	b, err := ioutil.ReadAll(res.Body)
+	b, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to fetch address.")
 	}
@@ -135,7 +135,7 @@ func (ac *addressClient) delete(accountAddressID string) (*addressResponse, erro
 		_ = res.Body.Close()
 	}()
 
-	b, err := ioutil.ReadAll(res.Body)
+	b, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to delete address.")
 	}

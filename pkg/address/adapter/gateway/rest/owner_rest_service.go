@@ -3,7 +3,7 @@ package rest
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"time"
@@ -86,7 +86,7 @@ func (ac *accountClient) find(accountID string) (*accountResponse, error) {
 		_ = res.Body.Close()
 	}()
 
-	b, err := ioutil.ReadAll(res.Body)
+	b, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to fetch account.")
 	}

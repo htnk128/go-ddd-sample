@@ -1,0 +1,43 @@
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
+    paths-ignore:
+      - '.**'
+      - '**.md'
+      - '**.sql'
+
+name: select_build
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup go runtime
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: ./go.mod
+          cache: true
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Build account
+        run: make build app=account
+
+      - name: Build address
+        run: make build app=address
+
+  select_build:
+    name: select_build
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Finish
+        run: echo "done"

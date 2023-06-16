@@ -52,6 +52,9 @@ func (abs *addressBookRestService) Find(accountID model.AccountID) (*model.Addre
 	if err != nil {
 		return nil, err
 	}
+	if res == nil {
+		return model.NewAddressBook([]*model.AccountAddress{}), nil
+	}
 
 	addresses := make([]*model.AccountAddress, len(res.Data))
 	for i, ar := range res.Data {
@@ -92,7 +95,7 @@ type (
 )
 
 func (ac *addressClient) findAll(accountID string) (*addressResponses, error) {
-	res, err := http.Get(fmt.Sprintf("%s?ownerId=%s", ac.config.url, accountID))
+	res, err := http.Get(fmt.Sprintf("%s?owner_id=%s", ac.config.url, accountID))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to fetch address.")
 	}

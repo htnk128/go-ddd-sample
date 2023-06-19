@@ -13,6 +13,14 @@ type PhoneNumber struct {
 	*domain.SomeValueObject[string]
 }
 
+func (pn *PhoneNumber) Equals(other *PhoneNumber) bool {
+	return pn.SameValueAs(other)
+}
+
+func (pn *PhoneNumber) SameValueAs(other *PhoneNumber) bool {
+	return pn.Value() == other.Value()
+}
+
 const PhoneNumberPattern = "[0-9]+"
 
 var PhoneNumberRegexp = regexp.MustCompile(PhoneNumberPattern)

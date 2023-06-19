@@ -13,6 +13,14 @@ type OwnerID struct {
 	*domain.SomeIdentity
 }
 
+func (oi *OwnerID) Equals(other *OwnerID) bool {
+	return oi.SameValueAs(other)
+}
+
+func (oi *OwnerID) SameValueAs(other *OwnerID) bool {
+	return oi.ID() == other.ID()
+}
+
 func GenerateOwnerID() *OwnerID {
 	return &OwnerID{SomeIdentity: domain.NewSomeIdentity(fmt.Sprintf("AC_%s", uuid.New().String()))}
 }

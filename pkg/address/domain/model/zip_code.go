@@ -13,6 +13,14 @@ type ZipCode struct {
 	*domain.SomeValueObject[string]
 }
 
+func (zc *ZipCode) Equals(other *ZipCode) bool {
+	return zc.SameValueAs(other)
+}
+
+func (zc *ZipCode) SameValueAs(other *ZipCode) bool {
+	return zc.Value() == other.Value()
+}
+
 const zipCodePattern = "[0-9A-Za-z]+"
 
 var zipCodeRegexp = regexp.MustCompile(zipCodePattern)

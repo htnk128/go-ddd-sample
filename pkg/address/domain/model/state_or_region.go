@@ -12,6 +12,14 @@ type StateOrRegion struct {
 	*domain.SomeValueObject[string]
 }
 
+func (sor *StateOrRegion) Equals(other *StateOrRegion) bool {
+	return sor.SameValueAs(other)
+}
+
+func (sor *StateOrRegion) SameValueAs(other *StateOrRegion) bool {
+	return sor.Value() == other.Value()
+}
+
 func NewStateOrRegion(value string) (*StateOrRegion, error) {
 	const (
 		minLength = 1

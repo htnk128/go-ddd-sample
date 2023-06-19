@@ -15,14 +15,6 @@ func (si *SomeIdentity) ID() string {
 	return si.id
 }
 
-func (si *SomeIdentity) Equals(other *SomeIdentity) bool {
-	return si.SameValueAs(other)
-}
-
-func (si *SomeIdentity) SameValueAs(other *SomeIdentity) bool {
-	return si.id == other.id
-}
-
 func (si *SomeIdentity) String() string {
 	return si.id
 }

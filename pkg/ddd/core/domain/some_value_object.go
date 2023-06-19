@@ -15,14 +15,6 @@ func (svo *SomeValueObject[V]) Value() V {
 	return svo.value
 }
 
-func (svo *SomeValueObject[V]) Equals(other *SomeValueObject[V]) bool {
-	return svo.SameValueAs(other)
-}
-
-func (svo *SomeValueObject[V]) SameValueAs(other *SomeValueObject[V]) bool {
-	return svo.value == other.value
-}
-
 func (svo *SomeValueObject[V]) String() string {
 	return fmt.Sprintf("%v", svo.value)
 }

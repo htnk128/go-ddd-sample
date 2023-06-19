@@ -12,6 +12,14 @@ type AccountAddressID struct {
 	*domain.SomeIdentity
 }
 
+func (aai *AccountAddressID) Equals(other *AccountAddressID) bool {
+	return aai.SameValueAs(other)
+}
+
+func (aai *AccountAddressID) SameValueAs(other *AccountAddressID) bool {
+	return aai.ID() == other.ID()
+}
+
 func NewAccountAddressID(id string) (*AccountAddressID, error) {
 	if domain.SomeIdentityMinLength <= len(id) && len(id) <= domain.SomeIdentityMaxLength && domain.SomeIdentityRegexp.MatchString(id) {
 		return &AccountAddressID{SomeIdentity: domain.NewSomeIdentity(id)}, nil

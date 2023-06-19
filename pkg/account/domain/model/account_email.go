@@ -12,6 +12,14 @@ type AccountEmail struct {
 	*domain.SomeValueObject[string]
 }
 
+func (ae *AccountEmail) Equals(other *AccountEmail) bool {
+	return ae.SameValueAs(other)
+}
+
+func (ae *AccountEmail) SameValueAs(other *AccountEmail) bool {
+	return ae.Value() == other.Value()
+}
+
 func NewAccountEmail(value string) (*AccountEmail, error) {
 	const (
 		minLength = 1

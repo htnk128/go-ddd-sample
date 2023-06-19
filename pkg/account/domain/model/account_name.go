@@ -12,6 +12,14 @@ type AccountName struct {
 	*domain.SomeValueObject[string]
 }
 
+func (an *AccountName) Equals(other *AccountName) bool {
+	return an.SameValueAs(other)
+}
+
+func (an *AccountName) SameValueAs(other *AccountName) bool {
+	return an.Value() == other.Value()
+}
+
 func NewAccountName(value string) (*AccountName, error) {
 	const (
 		minLength = 1

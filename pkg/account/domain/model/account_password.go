@@ -19,6 +19,14 @@ func (ap *AccountPassword) Format() string {
 	return "*****"
 }
 
+func (ap *AccountPassword) Equals(other *AccountPassword) bool {
+	return ap.SameValueAs(other)
+}
+
+func (ap *AccountPassword) SameValueAs(other *AccountPassword) bool {
+	return ap.Value() == other.Value()
+}
+
 func NewAccountPasswordWithHash(value string, id AccountID) (*AccountPassword, error) {
 	const (
 		minLength      = 6
